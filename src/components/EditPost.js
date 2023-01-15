@@ -188,7 +188,7 @@ export default function EditPost() {
                     />
 
                     <br></br>
-                    Current image:
+                    Featured image:
                     <br></br>
                     <br></br>
                     <img
@@ -198,7 +198,6 @@ export default function EditPost() {
                     <br></br>
                     <br></br>
                     <input
-                        value=""
                         name="image"
                         type="file"
                         accept="image/*"
