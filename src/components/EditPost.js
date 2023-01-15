@@ -127,7 +127,7 @@ export default function EditPost() {
         return () => {
             // this now gets called when the component unmounts
         };
-    }, [id]);
+    }, [id, post.body]);
 
     //END
 
