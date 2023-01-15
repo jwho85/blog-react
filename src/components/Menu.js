@@ -3,7 +3,6 @@ import "./Dashboard.css";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { Link, useNavigate } from "react-router-dom";
 import { auth, db, logout } from "./utils/firebase";
-import { collection, doc, addDoc, updateDoc, deleteDoc, Timestamp, query, orderBy, onSnapshot, getDocs, where } from "firebase/firestore";
 
 export default function Menu() {
 

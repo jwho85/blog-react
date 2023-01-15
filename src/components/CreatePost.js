@@ -140,13 +140,6 @@ export default function CreatePost() {
                     <br></br>
                     <br></br>
 
-                    {/* <textarea
-                        name="body"
-                        placeholder="Enter text here"
-                        value={formData.body}
-                        onChange={(e) => setFormData({ ...formData, body: e.target.value })}
-                    ></textarea> */}
-
                     <Editor
                         editorState={editorState}
                         onEditorStateChange={setEditorState}

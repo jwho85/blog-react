@@ -15,11 +15,10 @@ import { Editor } from 'react-draft-wysiwyg';
 import { convertToHTML, convertFromHTML } from 'draft-convert';
 import Menu from "./Menu";
 import { useParams } from "react-router-dom";
-import { htmlToText } from "html-to-text";
+import htmlToDraft from 'html-to-draftjs';
 
 export default function EditPost() {
 
-    const [user, loading, error] = useAuthState(auth);
     const [formData, setFormData] = useState({
         title: "",
         body: "",
@@ -29,7 +28,6 @@ export default function EditPost() {
     const [percent, setPercent] = useState(0);
     const [imageURL, setImageURL] = useState("");
     const [post, setPost] = useState([]);
-    const [text, setText] = useState("");
 
     const { id } = useParams();
 
@@ -40,6 +38,15 @@ export default function EditPost() {
     );
 
     const [convertedContent, setConvertedContent] = useState(null);
+
+    //function for converting the HTML back to text
+    const htmlToDraftBlocks = (html) => {
+        const blocksFromHtml = htmlToDraft(html);
+        const { contentBlocks, entityMap } = blocksFromHtml;
+        const contentState = ContentState.createFromBlockArray(contentBlocks, entityMap);
+        const editorState = EditorState.createWithContent(contentState);
+        return editorState;
+    }
 
     //function for converting post body to HTML
     useEffect(() => {
@@ -110,9 +117,7 @@ export default function EditPost() {
             try {
                 const docSnap = await getDoc(docRef);
                 setPost(docSnap.data());
-                const text = htmlToText(post.body, {
-                });
-                setText(text);
+                setEditorState(htmlToDraftBlocks(post.body));
             } catch (error) {
                 console.log(error)
             }
@@ -172,15 +177,8 @@ export default function EditPost() {
                     <br></br>
                     <br></br>
 
-                    {/* <textarea
-                        name="body"
-                        placeholder="Enter text here"
-                        value={formData.body}
-                        onChange={(e) => setFormData({ ...formData, body: e.target.value })}
-                    ></textarea> */}
-
                     <Editor
-                        editorState={EditorState.createWithContent(ContentState.createFromText(text))}
+                        editorState={editorState}
                         onEditorStateChange={setEditorState}
                         wrapperClassName="wrapper-class"
                         editorClassName="editor-class"
