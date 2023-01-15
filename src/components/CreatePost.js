@@ -56,7 +56,6 @@ export default function CreatePost() {
 
     function handleImageChange(event) {
         setFile(event.target.files[0]);
-        // setFormData({ ...formData, image: event.target.files[0].name });
     }
 
     const handleUpload = () => {
@@ -150,6 +149,14 @@ export default function CreatePost() {
                         toolbarClassName="toolbar-class"
                     />
 
+                    <br></br>
+                    Featured image:
+                    <br></br>
+                    <br></br>
+                    <img
+                        className="post-image"
+                        src={`${imageURL}`}
+                    />
                     <br></br>
                     <br></br>
                     <input

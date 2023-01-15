@@ -16,6 +16,7 @@ import { convertToHTML, convertFromHTML } from 'draft-convert';
 import Menu from "./Menu";
 import { useParams } from "react-router-dom";
 import htmlToDraft from 'html-to-draftjs';
+import { useNavigate } from "react-router-dom";
 
 export default function EditPost() {
 
@@ -30,6 +31,7 @@ export default function EditPost() {
     const [post, setPost] = useState([]);
 
     const { id } = useParams();
+    const navigate = useNavigate();
 
     //Draft.js code
 
@@ -66,7 +68,6 @@ export default function EditPost() {
 
     function handleImageChange(event) {
         setFile(event.target.files[0]);
-        // setFormData({ ...formData, image: event.target.files[0].name });
     }
 
     const handleUpload = () => {
@@ -108,7 +109,7 @@ export default function EditPost() {
 
     //Get post code
 
-    //function for getting the post
+    //function for getting the post and setting the editor state
     useEffect(() => {
         const getPost = async () => {
             const docRef = doc(db, 'posts', id);
@@ -117,6 +118,7 @@ export default function EditPost() {
                 setPost(docSnap.data());
                 setFormData({ ...formData, title: post.title });
                 setEditorState(htmlToDraftBlocks(post.body));
+                setImageURL(post.image);
             } catch (error) {
                 console.log(error)
             }
@@ -150,6 +152,7 @@ export default function EditPost() {
                 created: Timestamp.now(),
             })
             alert("Post updated successfully!")
+            navigate("/dashboard");
         } catch (err) {
             alert(err)
         }
@@ -184,6 +187,14 @@ export default function EditPost() {
                         toolbarClassName="toolbar-class"
                     />
 
+                    <br></br>
+                    Current image:
+                    <br></br>
+                    <br></br>
+                    <img
+                        className="post-image"
+                        src={`${imageURL}`}
+                    />
                     <br></br>
                     <br></br>
                     <input
