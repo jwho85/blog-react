@@ -47,8 +47,6 @@ export default function CreatePost() {
         setFormData({ ...formData, image: imageURL });
     }, [imageURL]);
 
-    // console.log(convertedContent);
-
     //END
 
     //Image upload code

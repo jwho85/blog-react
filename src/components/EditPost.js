@@ -60,8 +60,6 @@ export default function EditPost() {
         setFormData({ ...formData, image: imageURL });
     }, [imageURL]);
 
-    // console.log(convertedContent);
-
     //END
 
     //Image upload code
