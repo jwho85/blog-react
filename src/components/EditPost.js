@@ -46,12 +46,12 @@ export default function EditPost() {
         let html = convertToHTML(editorState.getCurrentContent());
         setConvertedContent(html);
         setFormData({ ...formData, body: convertedContent });
-    }, []);
+    },);
 
     //function for setting the image to the image URL
     useEffect(() => {
         setFormData({ ...formData, image: imageURL });
-    }, [formData, imageURL]);
+    }, [imageURL]);
 
     // console.log(convertedContent);
 
@@ -121,7 +121,7 @@ export default function EditPost() {
         return () => {
             // this now gets called when the component unmounts
         };
-    }, [id, post]);
+    }, [id, post.body]);
 
     //END
 

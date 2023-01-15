@@ -40,12 +40,12 @@ export default function CreatePost() {
         let html = convertToHTML(editorState.getCurrentContent());
         setConvertedContent(html);
         setFormData({ ...formData, body: convertedContent });
-    }, [editorState, convertedContent, formData]);
+    },);
 
     //function for setting the image to the image URL
     useEffect(() => {
         setFormData({ ...formData, image: imageURL });
-    }, [formData, imageURL]);
+    }, [imageURL]);
 
     // console.log(convertedContent);
 
