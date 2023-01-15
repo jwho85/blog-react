@@ -115,6 +115,7 @@ export default function EditPost() {
             try {
                 const docSnap = await getDoc(docRef);
                 setPost(docSnap.data());
+                setFormData({ ...formData, title: post.title });
                 setEditorState(htmlToDraftBlocks(post.body));
             } catch (error) {
                 console.log(error)

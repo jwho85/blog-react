@@ -14,6 +14,7 @@ import { EditorState } from 'draft-js';
 import { Editor } from 'react-draft-wysiwyg';
 import { convertToHTML } from 'draft-convert';
 import Menu from "./Menu";
+import { useNavigate } from "react-router-dom";
 
 export default function CreatePost() {
 
@@ -26,6 +27,8 @@ export default function CreatePost() {
     const [file, setFile] = useState("");
     const [percent, setPercent] = useState(0);
     const [imageURL, setImageURL] = useState("");
+    const navigate = useNavigate();
+
 
     //Draft.js code
 
@@ -112,6 +115,7 @@ export default function CreatePost() {
                 uid: user?.uid,
             })
             alert("Post created successfully!")
+            navigate("/dashboard");
         } catch (err) {
             alert(err)
         }
