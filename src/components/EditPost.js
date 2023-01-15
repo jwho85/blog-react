@@ -46,7 +46,7 @@ export default function EditPost() {
         let html = convertToHTML(editorState.getCurrentContent());
         setConvertedContent(html);
         setFormData({ ...formData, body: convertedContent });
-    }, [editorState, convertedContent, formData]);
+    }, []);
 
     //function for setting the image to the image URL
     useEffect(() => {
@@ -110,10 +110,8 @@ export default function EditPost() {
             try {
                 const docSnap = await getDoc(docRef);
                 setPost(docSnap.data());
-                console.log(post);
                 const text = htmlToText(post.body, {
                 });
-                console.log(text);
                 setText(text);
             } catch (error) {
                 console.log(error)
@@ -168,7 +166,7 @@ export default function EditPost() {
                         name="title"
                         type="text"
                         placeholder="Title"
-                        value={post.title}
+                        defaultValue={post.title}
                         onChange={(e) => setFormData({ ...formData, title: e.target.value })}
                     />
                     <br></br>

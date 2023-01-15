@@ -38,7 +38,6 @@ export default function ViewPosts() {
 
     //function for deleting a post
     const handleDelete = async (id) => {
-        console.log(id);
         const response = window.confirm("Are you sure you want to delete this post?");
         if (response) {
             const postDocRef = doc(db, 'posts', id)

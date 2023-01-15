@@ -83,11 +83,9 @@ export default function CreatePost() {
             () => {
                 // download url
                 getDownloadURL(uploadTask.snapshot.ref).then((url) => {
-                    console.log(url);
                     const urlToString = url.toString();
-                    console.log(urlToString);
                     setImageURL(urlToString);
-                    console.log(imageURL);
+
                 });
             }
         );
