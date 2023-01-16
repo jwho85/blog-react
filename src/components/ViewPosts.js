@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef } from "react";
 import "./Draft.css";
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
-import { collection, doc, addDoc, updateDoc, deleteDoc, Timestamp, query, orderBy, onSnapshot, where } from "firebase/firestore";
+import { collection, doc, addDoc, getDoc, updateDoc, deleteDoc, Timestamp, query, orderBy, onSnapshot, where } from "firebase/firestore";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth, db, logout } from "./utils/firebase";
 import DOMPurify from 'dompurify';
@@ -34,6 +34,25 @@ export default function ViewPosts() {
     function sortTasks(array) {
         array.sort((a, b) => (a.data.created > b.data.created ? -1 : 1));
         return array;
+    }
+
+    //function for duplicating a post
+    const handleDuplicate = async (id) => {
+        const docRef = doc(db, 'posts', id);
+        try {
+            const docSnap = await getDoc(docRef);
+            const currentPost = docSnap.data();
+            await addDoc(collection(db, 'posts'), {
+                title: currentPost.title + " Copy",
+                body: currentPost.body,
+                image: currentPost.image,
+                created: Timestamp.now(),
+                uid: user?.uid,
+            })
+            alert("Post duplicated successfully!")
+        } catch (error) {
+            console.log(error)
+        }
     }
 
     //function for deleting a post
@@ -78,6 +97,11 @@ export default function ViewPosts() {
                                 Edit
                             </button>
                         </Link>
+                        <button
+                            onClick={() => handleDuplicate(post.id)}
+                        >
+                            Duplicate
+                        </button>
                         <button
                             onClick={() => handleDelete(post.id)}
                         >
