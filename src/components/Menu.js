@@ -18,6 +18,7 @@ export default function Menu() {
                     <br></br>
                     <Link to="/dashboard">
                         <button
+                            className="menu-button"
                             type="button"
                         >
                             View Posts
@@ -25,6 +26,7 @@ export default function Menu() {
                     </Link>
                     <Link to="/create-post">
                         <button
+                            className="menu-button"
                             type="button"
                         >
                             Create Post

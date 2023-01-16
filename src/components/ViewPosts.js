@@ -11,6 +11,8 @@ export default function ViewPosts() {
 
     const [posts, setPosts] = useState([]);
     const [user, loading, error] = useAuthState(auth);
+    const [searchInput, setSearchInput] = useState("");
+    const [filteredPosts, setFilteredPosts] = useState([]);
 
     //function for sanitizing HTML
     function createMarkup(html) {
@@ -30,10 +32,31 @@ export default function ViewPosts() {
         })
     }, [])
 
+    //function for getting the value of the search input
+    function handleSearchChange(e) {
+        e.preventDefault();
+        setSearchInput(e.target.value)
+    }
+
+    //function for loading filtered posts
+    useEffect(() => {
+        setFilteredPosts(posts
+            .filter(post => post.data.title.match(searchInput) || post.data.title.toLowerCase().match(searchInput) ||
+                post.data.body.match(searchInput) || post.data.body.toLowerCase().match(searchInput))
+        );
+    },)
+
     //function for sorting posts after they are filtered
-    function sortTasks(array) {
+    function sortPosts(array) {
         array.sort((a, b) => (a.data.created > b.data.created ? -1 : 1));
         return array;
+    }
+
+    //function for changing timestamp back to string
+    function convertTimestamp(timestamp) {
+        const date = timestamp.toDate().toDateString();
+        const time = timestamp.toDate().toLocaleTimeString('en-US');
+        return date + " at " + time;
     }
 
     //function for duplicating a post
@@ -71,42 +94,56 @@ export default function ViewPosts() {
     return (
         <div>
             <div>
-                {sortTasks(posts).map(post => (
-                    <div
-                        className="single-post"
-                        id={post.id}
-                        key={post.id}
-                    >
-                        <h2
-                            className="post-title"
-                        >
-                            {post.data.title}
-                        </h2>
+                <div>
+                    <h4>Search for a post by keyword</h4>
+                    <input
+                        id="search-bar"
+                        type="text"
+                        value={searchInput}
+                        onChange={handleSearchChange} />
+                </div>
+                {sortPosts(filteredPosts).map(post => (
+                    <div>
+
                         <div
-                            className="post-body"
-                            dangerouslySetInnerHTML={createMarkup(post.data.body)}>
-                        </div>
-                        <img
-                            className="post-image"
-                            src={`${post.data.image}`}
-                        />
-                        <br></br><br></br>
-                        <Link to={"/edit-post/" + post.id}>
-                            <button
+                            className="single-post"
+                            id={post.id}
+                            key={post.id}
+                        >
+                            <h2
+                                className="post-title"
                             >
-                                Edit
+                                {post.data.title}
+                            </h2>
+                            <h4>{convertTimestamp(post.data.created)}</h4>
+                            <div
+                                className="post-body"
+                                dangerouslySetInnerHTML={createMarkup(post.data.body)}>
+                            </div>
+                            <img
+                                className="post-image"
+                                src={`${post.data.image}`} />
+                            <br></br><br></br>
+                            <Link to={"/edit-post/" + post.id}>
+                                <button
+                                    className="view-post-button"
+                                >
+                                    Edit
+                                </button>
+                            </Link>
+                            <button
+                                className="view-post-button"
+                                onClick={() => handleDuplicate(post.id)}
+                            >
+                                Duplicate
                             </button>
-                        </Link>
-                        <button
-                            onClick={() => handleDuplicate(post.id)}
-                        >
-                            Duplicate
-                        </button>
-                        <button
-                            onClick={() => handleDelete(post.id)}
-                        >
-                            Delete
-                        </button>
+                            <button
+                                className="view-post-button"
+                                onClick={() => handleDelete(post.id)}
+                            >
+                                Delete
+                            </button>
+                        </div>
                     </div>
                 ))}
             </div>

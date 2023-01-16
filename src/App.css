@@ -65,6 +65,10 @@ button {
   background: lightyellow;
 }
 
+.menu-button {
+  margin-bottom: 5px;
+}
+
 .post-image {
   width: 400px;
 }
@@ -73,6 +77,10 @@ button {
   margin: 50px 0px;
   background: #efefef;
   padding: 20px;
+}
+
+.view-post-button {
+  margin-right: 5px;
 }
 
 /*END*/
