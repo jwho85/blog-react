@@ -49,7 +49,7 @@ export default function ViewPosts() {
                 convertTimestamp(post.data.created).match(searchInput) ||
                 convertTimestamp(post.data.created).toLowerCase().match(searchInput))
         );
-    },)
+    }, [posts, searchInput])
 
     //function for sorting posts after they are filtered
     function sortPosts(array) {
@@ -108,47 +108,44 @@ export default function ViewPosts() {
                         onChange={handleSearchChange} />
                 </div>
                 {sortPosts(filteredPosts).map(post => (
-                    <div>
-
-                        <div
-                            className="single-post"
-                            id={post.id}
-                            key={post.id}
+                    <div
+                        className="single-post"
+                        id={post.id}
+                        key={post.id}
+                    >
+                        <h2
+                            className="post-title"
                         >
-                            <h2
-                                className="post-title"
-                            >
-                                {post.data.title}
-                            </h2>
-                            <h5>{convertTimestamp(post.data.created)}</h5>
-                            <div
-                                className="post-body"
-                                dangerouslySetInnerHTML={createMarkup(post.data.body)}>
-                            </div>
-                            <img
-                                className="post-image"
-                                src={`${post.data.image}`} />
-                            <br></br><br></br>
-                            <Link to={"/edit-post/" + post.id}>
-                                <button
-                                    className="view-post-button"
-                                >
-                                    Edit
-                                </button>
-                            </Link>
-                            <button
-                                className="view-post-button"
-                                onClick={() => handleDuplicate(post.id)}
-                            >
-                                Duplicate
-                            </button>
-                            <button
-                                className="view-post-button"
-                                onClick={() => handleDelete(post.id)}
-                            >
-                                Delete
-                            </button>
+                            {post.data.title}
+                        </h2>
+                        <h5>{convertTimestamp(post.data.created)}</h5>
+                        <div
+                            className="post-body"
+                            dangerouslySetInnerHTML={createMarkup(post.data.body)}>
                         </div>
+                        <img
+                            className="post-image"
+                            src={`${post.data.image}`} />
+                        <br></br><br></br>
+                        <Link to={"/edit-post/" + post.id}>
+                            <button
+                                className="view-post-button"
+                            >
+                                Edit
+                            </button>
+                        </Link>
+                        <button
+                            className="view-post-button"
+                            onClick={() => handleDuplicate(post.id)}
+                        >
+                            Duplicate
+                        </button>
+                        <button
+                            className="view-post-button"
+                            onClick={() => handleDelete(post.id)}
+                        >
+                            Delete
+                        </button>
                     </div>
                 ))}
             </div>

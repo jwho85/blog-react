@@ -30,8 +30,10 @@ export default function Dashboard() {
     };
 
     useEffect(() => {
-        if (loading) return;
-        if (!user) return navigate("/");
+        if (loading) {
+            return;
+        }
+        if (!user) navigate("/");
         fetchUserName();
     }, [user, loading]);
 
