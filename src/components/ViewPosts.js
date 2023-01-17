@@ -6,6 +6,7 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import { auth, db, logout } from "./utils/firebase";
 import DOMPurify from 'dompurify';
 import { Link } from "react-router-dom";
+import { Container } from "react-bootstrap";
 
 export default function ViewPosts() {
 
@@ -96,10 +97,10 @@ export default function ViewPosts() {
     }
 
     return (
-        <div>
+        <Container>
             <div>
                 <div>
-                    <h4>Search for a post by keyword</h4>
+                    <h5>Search for a post by keyword</h5>
                     <input
                         id="search-bar"
                         type="text"
@@ -119,7 +120,7 @@ export default function ViewPosts() {
                             >
                                 {post.data.title}
                             </h2>
-                            <h4>{convertTimestamp(post.data.created)}</h4>
+                            <h5>{convertTimestamp(post.data.created)}</h5>
                             <div
                                 className="post-body"
                                 dangerouslySetInnerHTML={createMarkup(post.data.body)}>
@@ -151,6 +152,6 @@ export default function ViewPosts() {
                     </div>
                 ))}
             </div>
-        </div >
+        </Container>
     );
 };

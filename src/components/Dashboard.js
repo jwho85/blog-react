@@ -6,6 +6,9 @@ import { auth, db, logout } from "./utils/firebase";
 import { collection, doc, addDoc, updateDoc, deleteDoc, Timestamp, query, orderBy, onSnapshot, getDocs, where } from "firebase/firestore";
 import ViewPosts from "./ViewPosts";
 import Menu from "./Menu";
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
+import Container from 'react-bootstrap/Container';
 
 export default function Dashboard() {
 
@@ -46,10 +49,10 @@ export default function Dashboard() {
     return (
         <div>
             <Menu />
-            <div>
+            <Container className="container-top-padding">
                 <h1>Welcome back {name}!</h1>
                 <p>You have {posts.length} posts.</p>
-            </div>
+            </Container>
             <ViewPosts />
         </div>
     );

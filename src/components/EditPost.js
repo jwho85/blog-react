@@ -17,6 +17,7 @@ import Menu from "./Menu";
 import { useParams } from "react-router-dom";
 import htmlToDraft from 'html-to-draftjs';
 import { useNavigate } from "react-router-dom";
+import Container from 'react-bootstrap/Container';
 
 export default function EditPost() {
 
@@ -163,9 +164,9 @@ export default function EditPost() {
     return (
         <div>
             <Menu />
-            <div>
+            <Container className="container-top-padding">
                 <div>
-                    <h1>Blog App</h1>
+                    <h1>Edit Post</h1>
                 </div>
                 <form onSubmit={handleSubmit}>
 
@@ -216,7 +217,7 @@ export default function EditPost() {
                     >Submit</button>
 
                 </form>
-            </div>
+            </Container>
         </div >
     );
 };

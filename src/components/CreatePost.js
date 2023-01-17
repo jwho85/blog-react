@@ -15,6 +15,7 @@ import { Editor } from 'react-draft-wysiwyg';
 import { convertToHTML } from 'draft-convert';
 import Menu from "./Menu";
 import { useNavigate } from "react-router-dom";
+import Container from 'react-bootstrap/Container';
 
 export default function CreatePost() {
 
@@ -28,7 +29,6 @@ export default function CreatePost() {
     const [percent, setPercent] = useState(0);
     const [imageURL, setImageURL] = useState("");
     const navigate = useNavigate();
-
 
     //Draft.js code
 
@@ -125,9 +125,9 @@ export default function CreatePost() {
     return (
         <div>
             <Menu />
-            <div>
+            <Container className="container-top-padding">
                 <div>
-                    <h1>Blog App</h1>
+                    <h1>Create Post</h1>
                 </div>
                 <form onSubmit={handleSubmit}>
 
@@ -147,6 +147,7 @@ export default function CreatePost() {
                         wrapperClassName="wrapper-class"
                         editorClassName="editor-class"
                         toolbarClassName="toolbar-class"
+                        placeholder="Content"
                     />
 
                     <br></br>
@@ -178,7 +179,7 @@ export default function CreatePost() {
                     >Submit</button>
 
                 </form>
-            </div>
+            </Container>
         </div >
     );
 };

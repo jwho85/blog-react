@@ -40,33 +40,12 @@
 
 /*JH*/
 
-.add-button {
-  margin-left: 5px;
-  background: lightgreen;
-}
-
-body {
-  padding: 20px;
-  margin: 0px;
-}
-
 button {
-  padding: 1px 5px;
   cursor: pointer;
 }
 
-.delete-button {
-  background: lightcoral;
-}
-
-.edit-button {
-  margin-left: 5px;
-  margin-right: 5px;
-  background: lightyellow;
-}
-
-.menu-button {
-  margin-bottom: 5px;
+.navbar {
+  background: #efefef;
 }
 
 .post-image {
@@ -74,13 +53,17 @@ button {
 }
 
 .single-post {
-  margin: 50px 0px;
+  margin: 30px 0px;
   background: #efefef;
   padding: 20px;
 }
 
 .view-post-button {
   margin-right: 5px;
+}
+
+.container-top-padding {
+  padding-top: 30px;
 }
 
 /*END*/
