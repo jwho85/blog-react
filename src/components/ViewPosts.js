@@ -41,8 +41,12 @@ export default function ViewPosts() {
     //function for loading filtered posts
     useEffect(() => {
         setFilteredPosts(posts
-            .filter(post => post.data.title.match(searchInput) || post.data.title.toLowerCase().match(searchInput) ||
-                post.data.body.match(searchInput) || post.data.body.toLowerCase().match(searchInput))
+            .filter(post => post.data.title.match(searchInput) ||
+                post.data.title.toLowerCase().match(searchInput) ||
+                post.data.body.match(searchInput) ||
+                post.data.body.toLowerCase().match(searchInput) ||
+                convertTimestamp(post.data.created).match(searchInput) ||
+                convertTimestamp(post.data.created).toLowerCase().match(searchInput))
         );
     },)
 
