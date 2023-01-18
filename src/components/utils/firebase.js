@@ -106,6 +106,9 @@ const sendPasswordReset = async (email) => {
 //function for logging out
 const logout = () => {
     signOut(auth);
+    setTimeout(function () {
+        window.location.href = '/';
+    }, 100);
 };
 
 export {

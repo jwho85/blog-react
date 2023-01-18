@@ -19,7 +19,6 @@ function App() {
           <Route exact path="/register" element={<Register />} />
           <Route exact path="/reset" element={<Reset />} />
           <Route exact path="/dashboard" element={<Dashboard />} />
-          <Route exact path="/view-posts" element={<ViewPosts />} />
           <Route exact path="/create-post" element={<CreatePost />} />
           <Route exact path="/edit-post/:id" element={<EditPost />} />
         </Routes>

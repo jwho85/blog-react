@@ -22,7 +22,7 @@ export default function Menu() {
                         <Nav.Link>Logged in as: {user?.email}</Nav.Link>
                         <Nav.Link as={Link} to={"/dashboard"}>View Posts</Nav.Link>
                         <Nav.Link as={Link} to={"/create-post"}>Create Post</Nav.Link>
-                        <Nav.Link as={Link} to={"/"} onClick={logout}>Logout</Nav.Link>
+                        <Nav.Link onClick={logout}>Logout</Nav.Link>
                     </Nav>
                 </Navbar.Collapse>
             </Container>
