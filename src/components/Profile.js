@@ -27,8 +27,8 @@ export default function Profile() {
     }, [])
 
     //function for updating a user
-    const updateUserProfile = async (name, id) => {
-        const userDocRef = doc(db, 'users', id);
+    const updateUserProfile = async (name, userID) => {
+        const userDocRef = doc(db, 'users', userID);
         try {
             await updateDoc(userDocRef, {
                 name: name,
@@ -52,7 +52,7 @@ export default function Profile() {
                             className="reset__textBox"
                             value={name}
                             onChange={(e) => setName(e.target.value)}
-                            placeholder={user.data.name}
+                            placeholder="Enter new name"
                         />
                         <button
                             className="reset__btn"
@@ -61,8 +61,6 @@ export default function Profile() {
                             Update name
                         </button>
                         <div className="users">
-
-
                         </div>
                     </div>
                 </div>
