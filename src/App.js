@@ -8,6 +8,7 @@ import Dashboard from "./components/Dashboard";
 import ViewPosts from './components/ViewPosts';
 import CreatePost from "./components/CreatePost";
 import EditPost from "./components/EditPost";
+import Profile from './components/Profile';
 
 function App() {
 
@@ -21,6 +22,7 @@ function App() {
           <Route exact path="/dashboard" element={<Dashboard />} />
           <Route exact path="/create-post" element={<CreatePost />} />
           <Route exact path="/edit-post/:id" element={<EditPost />} />
+          <Route exact path="/profile/:id" element={<Profile />} />
         </Routes>
       </Router>
     </div>
