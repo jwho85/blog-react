@@ -2,10 +2,10 @@ import React, { useEffect, useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useNavigate, useParams } from "react-router-dom";
 import { Link } from "react-router-dom";
-import { auth, db, logout } from "./utils/firebase";
+import { auth, db, logout, sendPasswordReset } from "./utils/firebase";
 import { collection, doc, addDoc, getDoc, getDocs, updateDoc, deleteDoc, Timestamp, query, orderBy, onSnapshot, where } from "firebase/firestore";
 import Menu from "./Menu";
-import { getAuth, updatePassword, updateProfile } from "firebase/auth";
+import { updateProfile, deleteUser, EmailAuthProvider, reauthenticateWithCredential } from "firebase/auth";
 
 export default function Profile() {
 
@@ -13,8 +13,6 @@ export default function Profile() {
     const [user, loading, error] = useAuthState(auth);
     const [userInfo, setUserInfo] = useState([]);
     const navigate = useNavigate();
-    const [currentPassword, setCurrentPassword] = "";
-    const [newPassword, setNewPassword] = "";
 
     const { id } = useParams();
 
@@ -30,9 +28,10 @@ export default function Profile() {
             })))
         })
         console.log(user.displayName);
+        console.log(user.email);
     }, [])
 
-    //function for updating a user
+    //function for updating the current user
     const updateUserProfile = async (name, userID) => {
         const userDocRef = doc(db, 'users', userID);
         try {
@@ -48,13 +47,34 @@ export default function Profile() {
         }
     };
 
-    //function for updating password (not working)
-    const updateUserPassword = async (currentUser, newPassword) => {
-        updatePassword(currentUser, newPassword).then(() => {
-            alert("Password updated successfully!")
-        }).catch((err) => {
-            alert(err)
-        });
+    //function for deleting the current user
+    const deleteCurrentUser = async (userID) => {
+        const response = window.confirm("Are you sure you want to delete your account?");
+        if (response) {
+            const password = prompt("Please enter your password");
+            const credential = EmailAuthProvider.credential(
+                auth.currentUser.email,
+                password
+            )
+            const result = await reauthenticateWithCredential(
+                auth.currentUser,
+                credential
+            )
+            try {
+                await deleteUser(result.user);
+            } catch (err) {
+                alert(err)
+            }
+            const userDocRef = doc(db, 'users', userID);
+            try {
+                await deleteDoc(userDocRef)
+            } catch (err) {
+                alert(err)
+            }
+            console.log("Account has been deleted");
+            localStorage.removeItem("user");
+            navigate("/");
+        }
     }
 
     return (
@@ -78,18 +98,17 @@ export default function Profile() {
                         >
                             Update name
                         </button>
-                        <input
-                            type="text"
-                            className="reset__textBox"
-                            value={newPassword}
-                            onChange={(e) => setNewPassword(e.target.value)}
-                            placeholder="Enter new password"
-                        />
                         <button
                             className="reset__btn"
-                            onClick={() => updateUserPassword(currentUser, newPassword)}
+                            onClick={() => sendPasswordReset(user.data.email)}
                         >
-                            Update password
+                            Send password reset email
+                        </button>
+                        <button
+                            className="reset__btn"
+                            onClick={() => deleteCurrentUser(user.id)}
+                        >
+                            Delete account
                         </button>
                     </div>
                 </div>
