@@ -18,6 +18,7 @@ const ViewPosts = props => {
     const [backgroundColor, setBackgroundColor] = useState("");
     const [postColorValue, setPostColorValue] = useState("");
     const [postColor, setPostColor] = useState("");
+    const [fontColor, setFontColor] = useState("");
 
     //function for sanitizing HTML
     function createMarkup(html) {
@@ -104,6 +105,13 @@ const ViewPosts = props => {
         setPostColor(color);
     };
 
+    const resetStyles = () => {
+        props.handleBackgroundColorChange("white");
+        setPostColor("#efefef");
+        props.handleFontColorChange("black");
+        console.log("reset button clicked");
+    }
+
     return (
         <Container>
             <div>
@@ -125,7 +133,7 @@ const ViewPosts = props => {
                 />
                 <button
                     className="view-post-button"
-                    onClick={() => props.onColorChange(backgroundColor)}
+                    onClick={() => props.handleBackgroundColorChange(backgroundColor)}
                 >
                     Change background color
                 </button>
@@ -141,6 +149,26 @@ const ViewPosts = props => {
                     onClick={() => handlePostColorChange(postColorValue)}
                 >
                     Change post color
+                </button>
+                <br></br><br></br>
+                <input
+                    className="change-background"
+                    type="text"
+                    value={fontColor}
+                    onChange={(e) => setFontColor(e.target.value)}
+                />
+                <button
+                    className="view-post-button"
+                    onClick={() => props.handleFontColorChange(fontColor)}
+                >
+                    Change font color
+                </button>
+                <br></br><br></br>
+                <button
+                    className="view-post-button"
+                    onClick={() => resetStyles()}
+                >
+                    Reset styles
                 </button>
                 {sortPosts(filteredPosts).map(post => (
                     <div

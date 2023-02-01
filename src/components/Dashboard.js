@@ -18,10 +18,15 @@ export default function Dashboard() {
     const navigate = useNavigate();
 
     const [backgroundColor, setBackgroundColor] = useState("");
+    const [fontColor, setFontColor] = useState("");
 
-    const handleColorChange = (color) => {
+    const handleBackgroundColorChange = (color) => {
         setBackgroundColor(color);
     };
+
+    const handleFontColorChange = (color) => {
+        setFontColor(color);
+    }
 
     const fetchUserName = async () => {
         try {
@@ -55,13 +60,19 @@ export default function Dashboard() {
     }, [])
 
     return (
-        <div style={{ backgroundColor: `${backgroundColor}` }}>
+        <div style={{
+            background: `${backgroundColor}`,
+            color: `${fontColor}`
+        }}>
             <Menu />
             <Container className="container-top-padding">
                 <h1>Welcome back {name}!</h1>
                 <p>You have {posts.length} posts.</p>
             </Container>
-            <ViewPosts onColorChange={handleColorChange} />
+            <ViewPosts
+                handleBackgroundColorChange={handleBackgroundColorChange}
+                handleFontColorChange={handleFontColorChange}
+            />
         </div>
     );
 }
