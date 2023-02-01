@@ -8,12 +8,14 @@ import DOMPurify from 'dompurify';
 import { Link } from "react-router-dom";
 import { Container } from "react-bootstrap";
 
-export default function ViewPosts() {
+const ViewPosts = props => {
 
     const [posts, setPosts] = useState([]);
     const [user, loading, error] = useAuthState(auth);
     const [searchInput, setSearchInput] = useState("");
     const [filteredPosts, setFilteredPosts] = useState([]);
+
+    const [color, setColor] = useState("");
 
     //function for sanitizing HTML
     function createMarkup(html) {
@@ -105,8 +107,22 @@ export default function ViewPosts() {
                         id="search-bar"
                         type="text"
                         value={searchInput}
-                        onChange={handleSearchChange} />
+                        onChange={handleSearchChange}
+                    />
                 </div>
+                <br></br>
+                <input
+                    className="change-background"
+                    type="text"
+                    value={color}
+                    onChange={(e) => setColor(e.target.value)}
+                />
+                <button
+                    className="view-post-button"
+                    onClick={() => props.onColorChange(color)}
+                >
+                    Change background
+                </button>
                 {sortPosts(filteredPosts).map(post => (
                     <div
                         className="single-post"
@@ -152,3 +168,5 @@ export default function ViewPosts() {
         </Container>
     );
 };
+
+export default ViewPosts;

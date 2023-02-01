@@ -44,6 +44,10 @@ button {
   cursor: pointer;
 }
 
+.change-background {
+  margin-right: 5px;
+}
+
 .navbar {
   background: #efefef;
 }

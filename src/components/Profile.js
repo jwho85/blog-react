@@ -13,6 +13,7 @@ export default function Profile() {
     const [user, loading, error] = useAuthState(auth);
     const [userInfo, setUserInfo] = useState([]);
     const navigate = useNavigate();
+    const [password, setPassword] = useState("");
 
     const { id } = useParams();
 
@@ -27,8 +28,6 @@ export default function Profile() {
                 data: doc.data()
             })))
         })
-        console.log(user.displayName);
-        console.log(user.email);
     }, [])
 
     //function for updating the current user
@@ -49,31 +48,34 @@ export default function Profile() {
 
     //function for deleting the current user
     const deleteCurrentUser = async (userID) => {
-        const response = window.confirm("Are you sure you want to delete your account?");
-        if (response) {
-            const password = prompt("Please enter your password");
-            const credential = EmailAuthProvider.credential(
-                auth.currentUser.email,
-                password
-            )
-            const result = await reauthenticateWithCredential(
-                auth.currentUser,
-                credential
-            )
-            try {
-                await deleteUser(result.user);
-            } catch (err) {
-                alert(err)
+        if (password === null || password.trim() === "") {
+            alert("Please enter a password to delete your account");
+        } else {
+            const response = window.confirm("Are you sure you want to delete your account?");
+            if (response) {
+                const credential = EmailAuthProvider.credential(
+                    auth.currentUser.email,
+                    password
+                )
+                const result = await reauthenticateWithCredential(
+                    auth.currentUser,
+                    credential
+                )
+                try {
+                    await deleteUser(result.user);
+                } catch (err) {
+                    alert(err)
+                }
+                const userDocRef = doc(db, 'users', userID);
+                try {
+                    await deleteDoc(userDocRef)
+                } catch (err) {
+                    alert(err)
+                }
+                console.log("Account has been deleted");
+                localStorage.removeItem("user");
+                navigate("/");
             }
-            const userDocRef = doc(db, 'users', userID);
-            try {
-                await deleteDoc(userDocRef)
-            } catch (err) {
-                alert(err)
-            }
-            console.log("Account has been deleted");
-            localStorage.removeItem("user");
-            navigate("/");
         }
     }
 
@@ -104,6 +106,13 @@ export default function Profile() {
                         >
                             Send password reset email
                         </button>
+                        <input
+                            type="password"
+                            className="login__textBox"
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
+                            placeholder="Password"
+                        />
                         <button
                             className="reset__btn"
                             onClick={() => deleteCurrentUser(user.id)}

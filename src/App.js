@@ -10,7 +10,7 @@ import CreatePost from "./components/CreatePost";
 import EditPost from "./components/EditPost";
 import Profile from './components/Profile';
 
-function App() {
+export default function App() {
 
   return (
     <div className="app">
@@ -28,5 +28,3 @@ function App() {
     </div>
   );
 }
-
-export default App;

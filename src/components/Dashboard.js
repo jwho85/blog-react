@@ -17,6 +17,12 @@ export default function Dashboard() {
     const [posts, setPosts] = useState([]);
     const navigate = useNavigate();
 
+    const [backgroundColor, setBackgroundColor] = useState("");
+
+    const handleColorChange = (color) => {
+        setBackgroundColor(color);
+    };
+
     const fetchUserName = async () => {
         try {
             const q = query(collection(db, "users"), where("uid", "==", user?.uid));
@@ -49,13 +55,13 @@ export default function Dashboard() {
     }, [])
 
     return (
-        <div>
+        <div style={{ backgroundColor: `${backgroundColor}` }}>
             <Menu />
             <Container className="container-top-padding">
                 <h1>Welcome back {name}!</h1>
                 <p>You have {posts.length} posts.</p>
             </Container>
-            <ViewPosts />
+            <ViewPosts onColorChange={handleColorChange} />
         </div>
     );
 }
