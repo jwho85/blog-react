@@ -15,7 +15,9 @@ const ViewPosts = props => {
     const [searchInput, setSearchInput] = useState("");
     const [filteredPosts, setFilteredPosts] = useState([]);
 
-    const [color, setColor] = useState("");
+    const [backgroundColor, setBackgroundColor] = useState("");
+    const [postColorValue, setPostColorValue] = useState("");
+    const [postColor, setPostColor] = useState("");
 
     //function for sanitizing HTML
     function createMarkup(html) {
@@ -98,6 +100,10 @@ const ViewPosts = props => {
         }
     }
 
+    const handlePostColorChange = (color) => {
+        setPostColor(color);
+    };
+
     return (
         <Container>
             <div>
@@ -114,17 +120,31 @@ const ViewPosts = props => {
                 <input
                     className="change-background"
                     type="text"
-                    value={color}
-                    onChange={(e) => setColor(e.target.value)}
+                    value={backgroundColor}
+                    onChange={(e) => setBackgroundColor(e.target.value)}
                 />
                 <button
                     className="view-post-button"
-                    onClick={() => props.onColorChange(color)}
+                    onClick={() => props.onColorChange(backgroundColor)}
                 >
-                    Change background
+                    Change background color
+                </button>
+                <br></br><br></br>
+                <input
+                    className="change-background"
+                    type="text"
+                    value={postColorValue}
+                    onChange={(e) => setPostColorValue(e.target.value)}
+                />
+                <button
+                    className="view-post-button"
+                    onClick={() => handlePostColorChange(postColorValue)}
+                >
+                    Change post color
                 </button>
                 {sortPosts(filteredPosts).map(post => (
                     <div
+                        style={{ backgroundColor: `${postColor}` }}
                         className="single-post"
                         id={post.id}
                         key={post.id}
