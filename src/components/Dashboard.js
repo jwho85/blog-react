@@ -23,6 +23,12 @@ export default function Dashboard() {
     const [fontFamily, setFontFamily] = useState("");
     const [userInfo, setUserInfo] = useState("");
 
+    const [userDocID, setUserDocID] = useState("");
+    const [userBackgroundColor, setUserBackgroundColor] = useState("");
+    const [userPostColor, setUserPostColor] = useState("");
+    const [userFontColor, setUserFontColor] = useState("");
+    const [userFontFamily, setUserFontFamily] = useState("");
+
     const userID = auth.currentUser.uid;
 
     //function for automatically retrieving user
@@ -36,11 +42,13 @@ export default function Dashboard() {
         })
     }, [])
 
-    const userDocID = userInfo[0]?.id;
-    const userBackgroundColor = userInfo[0]?.data.backgroundColor;
-    const userPostColor = userInfo[0]?.data.postColor;
-    const userFontColor = userInfo[0]?.data.fontColor;
-    const userFontFamily = userInfo[0]?.data.fontFamily;
+    useEffect(() => {
+        setUserDocID(userInfo[0]?.id);
+        setUserBackgroundColor(userInfo[0]?.data.backgroundColor);
+        setUserPostColor(userInfo[0]?.data.postColor);
+        setUserFontColor(userInfo[0]?.data.fontColor);
+        setUserFontFamily(userInfo[0]?.data.fontFamily);
+    })
 
     const handleBackgroundColorChange = async (color, userDocID) => {
         setBackgroundColor(color);
