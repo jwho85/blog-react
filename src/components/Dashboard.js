@@ -15,17 +15,70 @@ export default function Dashboard() {
     const [user, loading, error] = useAuthState(auth);
     const [name, setName] = useState("");
     const [posts, setPosts] = useState([]);
+
     const navigate = useNavigate();
 
     const [backgroundColor, setBackgroundColor] = useState("");
     const [fontColor, setFontColor] = useState("");
+    const [fontFamily, setFontFamily] = useState("");
+    const [userInfo, setUserInfo] = useState("");
 
-    const handleBackgroundColorChange = (color) => {
+    const userID = auth.currentUser.uid;
+
+    //function for automatically retrieving user
+    useEffect(() => {
+        const q = query(collection(db, 'users'), where("uid", "==", userID));
+        onSnapshot(q, (querySnapshot) => {
+            setUserInfo(querySnapshot.docs.map(doc => ({
+                id: doc.id,
+                data: doc.data()
+            })))
+        })
+    }, [])
+
+    const userDocID = userInfo[0]?.id;
+    const userBackgroundColor = userInfo[0]?.data.backgroundColor;
+    const userPostColor = userInfo[0]?.data.postColor;
+    const userFontColor = userInfo[0]?.data.fontColor;
+    const userFontFamily = userInfo[0]?.data.fontFamily;
+
+    const handleBackgroundColorChange = async (color, userDocID) => {
         setBackgroundColor(color);
+        const userDocRef = doc(db, 'users', userDocID);
+        try {
+            await updateDoc(userDocRef, {
+                backgroundColor: color,
+            })
+            console.log("Background color updated");
+        } catch (err) {
+            alert(err)
+        }
     };
 
-    const handleFontColorChange = (color) => {
+    const handleFontColorChange = async (color, userDocID) => {
         setFontColor(color);
+        const userDocRef = doc(db, 'users', userDocID);
+        try {
+            await updateDoc(userDocRef, {
+                fontColor: color,
+            })
+            console.log("Font color updated");
+        } catch (err) {
+            alert(err)
+        }
+    }
+
+    const handleFontFamilyChange = async (font, userDocID) => {
+        setFontFamily(font);
+        const userDocRef = doc(db, 'users', userDocID);
+        try {
+            await updateDoc(userDocRef, {
+                fontFamily: font,
+            })
+            console.log("Font family updated");
+        } catch (err) {
+            alert(err)
+        }
     }
 
     const fetchUserName = async () => {
@@ -60,19 +113,24 @@ export default function Dashboard() {
     }, [])
 
     return (
-        <div style={{
-            background: `${backgroundColor}`,
-            color: `${fontColor}`
-        }}>
+        <div>
             <Menu />
-            <Container className="container-top-padding">
-                <h1>Welcome back {name}!</h1>
-                <p>You have {posts.length} posts.</p>
-            </Container>
-            <ViewPosts
-                handleBackgroundColorChange={handleBackgroundColorChange}
-                handleFontColorChange={handleFontColorChange}
-            />
+            <div className="bottom-padding"
+                style={{
+                    background: `${userBackgroundColor}`,
+                    color: `${userFontColor}`,
+                    fontFamily: `${userFontFamily}`
+                }}>
+                <Container className="container-top-padding">
+                    <h1>Welcome back {name}!</h1>
+                    <p>You have {posts.length} posts.</p>
+                </Container>
+                <ViewPosts
+                    handleBackgroundColorChange={handleBackgroundColorChange}
+                    handleFontColorChange={handleFontColorChange}
+                    handleFontFamilyChange={handleFontFamilyChange}
+                />
+            </div>
         </div>
     );
 }

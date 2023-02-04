@@ -40,6 +40,10 @@
 
 /*JH*/
 
+.bottom-padding {
+  padding-bottom: 30px;
+}
+
 button {
   cursor: pointer;
 }

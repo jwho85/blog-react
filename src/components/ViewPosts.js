@@ -5,7 +5,7 @@ import { collection, doc, addDoc, getDoc, updateDoc, deleteDoc, Timestamp, query
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth, db, logout } from "./utils/firebase";
 import DOMPurify from 'dompurify';
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Container } from "react-bootstrap";
 
 const ViewPosts = props => {
@@ -14,11 +14,32 @@ const ViewPosts = props => {
     const [user, loading, error] = useAuthState(auth);
     const [searchInput, setSearchInput] = useState("");
     const [filteredPosts, setFilteredPosts] = useState([]);
-
     const [backgroundColor, setBackgroundColor] = useState("");
     const [postColorValue, setPostColorValue] = useState("");
     const [postColor, setPostColor] = useState("");
     const [fontColor, setFontColor] = useState("");
+    const [fontFamily, setFontFamily] = useState("");
+    const [showOptions, setShowOptions] = useState(false);
+    const [userInfo, setUserInfo] = useState("");
+
+    const userID = auth.currentUser.uid;
+
+    //function for automatically retrieving user
+    useEffect(() => {
+        const q = query(collection(db, 'users'), where("uid", "==", userID));
+        onSnapshot(q, (querySnapshot) => {
+            setUserInfo(querySnapshot.docs.map(doc => ({
+                id: doc.id,
+                data: doc.data()
+            })))
+        })
+    }, [])
+
+    const userDocID = userInfo[0]?.id;
+    const userBackgroundColor = userInfo[0]?.data.backgroundColor;
+    const userPostColor = userInfo[0]?.data.postColor;
+    const userFontColor = userInfo[0]?.data.fontColor;
+    const userFontFamily = userInfo[0]?.data.fontFamily;
 
     //function for sanitizing HTML
     function createMarkup(html) {
@@ -101,15 +122,29 @@ const ViewPosts = props => {
         }
     }
 
-    const handlePostColorChange = (color) => {
+    const handlePostColorChange = async (color, userDocID) => {
         setPostColor(color);
+        const userDocRef = doc(db, 'users', userDocID);
+        try {
+            await updateDoc(userDocRef, {
+                postColor: color,
+            })
+            console.log("Post color updated");
+        } catch (err) {
+            alert(err)
+        }
     };
 
     const resetStyles = () => {
-        props.handleBackgroundColorChange("white");
-        setPostColor("#efefef");
-        props.handleFontColorChange("black");
-        console.log("reset button clicked");
+        props.handleBackgroundColorChange("white", userDocID);
+        handlePostColorChange("#efefef", userDocID);
+        props.handleFontColorChange("black", userDocID);
+        props.handleFontFamilyChange("inherit", userDocID);
+        console.log("Reset button clicked");
+    }
+
+    const handleShowOptions = () => {
+        setShowOptions(!showOptions);
     }
 
     return (
@@ -125,54 +160,83 @@ const ViewPosts = props => {
                     />
                 </div>
                 <br></br>
-                <input
-                    className="change-background"
-                    type="text"
-                    value={backgroundColor}
-                    onChange={(e) => setBackgroundColor(e.target.value)}
-                />
-                <button
-                    className="view-post-button"
-                    onClick={() => props.handleBackgroundColorChange(backgroundColor)}
-                >
-                    Change background color
-                </button>
-                <br></br><br></br>
-                <input
-                    className="change-background"
-                    type="text"
-                    value={postColorValue}
-                    onChange={(e) => setPostColorValue(e.target.value)}
-                />
-                <button
-                    className="view-post-button"
-                    onClick={() => handlePostColorChange(postColorValue)}
-                >
-                    Change post color
-                </button>
-                <br></br><br></br>
-                <input
-                    className="change-background"
-                    type="text"
-                    value={fontColor}
-                    onChange={(e) => setFontColor(e.target.value)}
-                />
-                <button
-                    className="view-post-button"
-                    onClick={() => props.handleFontColorChange(fontColor)}
-                >
-                    Change font color
-                </button>
-                <br></br><br></br>
-                <button
-                    className="view-post-button"
-                    onClick={() => resetStyles()}
-                >
-                    Reset styles
-                </button>
+                <input type="submit" value="Post Options" onClick={handleShowOptions} />
+                {showOptions &&
+                    <div>
+                        <br></br>
+                        <input
+                            className="change-background"
+                            type="color"
+                            defaultValue={userBackgroundColor}
+                            onChange={(e) => setBackgroundColor(e.target.value)}
+                        />
+                        <button
+                            className="view-post-button"
+                            onClick={() => props.handleBackgroundColorChange(backgroundColor, userDocID)}
+                        >
+                            Change background color
+                        </button>
+                        <br></br><br></br>
+                        <input
+                            className="change-background"
+                            type="color"
+                            defaultValue={userPostColor}
+                            onChange={(e) => setPostColorValue(e.target.value)}
+                        />
+                        <button
+                            className="view-post-button"
+                            onClick={() => handlePostColorChange(postColorValue, userDocID)}
+                        >
+                            Change post color
+                        </button>
+                        <br></br><br></br>
+                        <input
+                            className="change-background"
+                            type="color"
+                            defaultValue={userFontColor}
+                            onChange={(e) => setFontColor(e.target.value)}
+                        />
+                        <button
+                            className="view-post-button"
+                            onClick={() => props.handleFontColorChange(fontColor, userDocID)}
+                        >
+                            Change font color
+                        </button>
+                        <br></br><br></br>
+                        <select
+                            className="change-background"
+                            type="text"
+                            defaultValue={userFontFamily}
+                            onChange={(e) => setFontFamily(e.target.value)}
+                        >
+                            <option value="arial">Arial</option>
+                            <option value="verdana">Verdana</option>
+                            <option value="tahoma">Tahoma</option>
+                            <option value="trebuchet ms">Trebuchet MS</option>
+                            <option value="times new roman">Times New Roman</option>
+                            <option value="georgia">Georgia</option>
+                            <option value="garamond">Garamond</option>
+                            <option value="courier new">Courier New</option>
+                            <option value="brush script mt">Brush Script MT</option>
+                        </select>
+                        <button
+                            className="view-post-button"
+                            onClick={() => props.handleFontFamilyChange(fontFamily, userDocID)}
+                        >
+                            Change font family
+                        </button>
+                        <br></br><br></br>
+                        <button
+                            className="view-post-button"
+                            onClick={() => resetStyles()}
+                        >
+                            Reset styles
+                        </button>
+                    </div>
+                }
                 {sortPosts(filteredPosts).map(post => (
                     <div
-                        style={{ backgroundColor: `${postColor}` }}
+                        style={{ backgroundColor: `${userPostColor}` }}
                         className="single-post"
                         id={post.id}
                         key={post.id}
