@@ -60,6 +60,10 @@ button {
   height: 100vh;
 }
 
+.edit-post {
+  height: 100vh;
+}
+
 .footer {
   background: black;
   text-align: center;

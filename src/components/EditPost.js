@@ -164,7 +164,7 @@ export default function EditPost() {
     return (
         <div>
             <Menu />
-            <Container className="container-top-padding">
+            <Container className="container-top-padding edit-post">
                 <div>
                     <h1>Edit Post</h1>
                 </div>

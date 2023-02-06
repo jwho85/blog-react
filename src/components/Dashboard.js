@@ -25,8 +25,8 @@ export default function Dashboard() {
     const [fontColor, setFontColor] = useState("");
     const [fontFamily, setFontFamily] = useState("");
     const [showOptions, setShowOptions] = useState(false);
-    const [userInfo, setUserInfo] = useState("");
 
+    const [userInfo, setUserInfo] = useState("");
     const [userDocID, setUserDocID] = useState("");
     const [userBackgroundColor, setUserBackgroundColor] = useState("");
     const [userPostColor, setUserPostColor] = useState("");
@@ -34,31 +34,6 @@ export default function Dashboard() {
     const [userFontFamily, setUserFontFamily] = useState("");
 
     const navigate = useNavigate();
-    const userID = auth.currentUser.uid;
-
-    //function for automatically retrieving user
-    useEffect(() => {
-        const q = query(collection(db, 'users'), where("uid", "==", userID));
-        onSnapshot(q, (querySnapshot) => {
-            setUserInfo(querySnapshot.docs.map(doc => ({
-                id: doc.id,
-                data: doc.data()
-            })))
-        })
-    }, [])
-
-    //function for getting the username
-    const fetchUserName = async () => {
-        try {
-            const q = query(collection(db, "users"), where("uid", "==", user?.uid));
-            const doc = await getDocs(q);
-            const data = doc.docs[0].data();
-            setName(data.name);
-        } catch (err) {
-            console.error(err);
-            // alert("An error occured while fetching user data");
-        }
-    };
 
     //function to check for user
     useEffect(() => {
@@ -66,8 +41,18 @@ export default function Dashboard() {
             return;
         }
         if (!user) navigate("/");
-        fetchUserName();
     }, [user, loading]);
+
+    //function for automatically retrieving user
+    useEffect(() => {
+        const q = query(collection(db, 'users'), where("uid", "==", user?.uid));
+        onSnapshot(q, (querySnapshot) => {
+            setUserInfo(querySnapshot.docs.map(doc => ({
+                id: doc.id,
+                data: doc.data()
+            })))
+        })
+    }, [])
 
     //function for automatically retrieving posts
     useEffect(() => {
@@ -82,6 +67,7 @@ export default function Dashboard() {
 
     //function for setting user post options
     useEffect(() => {
+        setName(userInfo[0]?.data.name);
         setUserDocID(userInfo[0]?.id);
         setUserBackgroundColor(userInfo[0]?.data.backgroundColor);
         setUserPostColor(userInfo[0]?.data.postColor);

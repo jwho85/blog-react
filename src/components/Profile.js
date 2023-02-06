@@ -12,10 +12,10 @@ export default function Profile() {
     const [name, setName] = useState("");
     const [user, loading, error] = useAuthState(auth);
     const [userInfo, setUserInfo] = useState([]);
-    const navigate = useNavigate();
     const [password, setPassword] = useState("");
 
     const { id } = useParams();
+    const navigate = useNavigate();
 
     const currentUser = auth.currentUser;
 
