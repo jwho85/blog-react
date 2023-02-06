@@ -20,7 +20,7 @@ export default function Menu() {
                 <Navbar.Collapse id="responsive-navbar-nav">
                     <Nav className="ml-auto">
                         <Nav.Link>Logged in as: {user?.email}</Nav.Link>
-                        <Nav.Link as={Link} to={"/dashboard"}>View Posts</Nav.Link>
+                        <Nav.Link as={Link} to={"/dashboard"}>Dashboard</Nav.Link>
                         <Nav.Link as={Link} to={"/create-post"}>Create Post</Nav.Link>
                         <Nav.Link as={Link} to={"/profile/" + user?.uid}>Profile</Nav.Link>
                         <Nav.Link onClick={logout}>Logout</Nav.Link>

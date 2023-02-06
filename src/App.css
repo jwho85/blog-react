@@ -52,6 +52,21 @@ button {
   margin-right: 5px;
 }
 
+.container-top-padding {
+  padding-top: 30px;
+}
+
+.create-post {
+  height: 100vh;
+}
+
+.footer {
+  background: black;
+  text-align: center;
+  color: white;
+  padding: 5%;
+}
+
 .navbar {
   background: #efefef;
 }
@@ -70,8 +85,6 @@ button {
   margin-right: 5px;
 }
 
-.container-top-padding {
-  padding-top: 30px;
-}
+
 
 /*END*/

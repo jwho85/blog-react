@@ -5,10 +5,11 @@ import Login from "./components/Login";
 import Register from "./components/Register";
 import Reset from "./components/Reset";
 import Dashboard from "./components/Dashboard";
-import ViewPosts from './components/ViewPosts';
 import CreatePost from "./components/CreatePost";
 import EditPost from "./components/EditPost";
 import Profile from './components/Profile';
+import Menu from "./components/Menu";
+import Footer from "./components/Footer";
 
 export default function App() {
 
@@ -25,6 +26,7 @@ export default function App() {
           <Route exact path="/profile/:id" element={<Profile />} />
         </Routes>
       </Router>
+      <Footer />
     </div>
   );
 }
