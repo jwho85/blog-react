@@ -57,11 +57,13 @@ button {
 }
 
 .create-post {
-  height: 100vh;
+  height: auto;
+  padding-bottom: 30px;
 }
 
 .edit-post {
-  height: 100vh;
+  height: auto;
+  padding-bottom: 30px;
 }
 
 .footer {
@@ -88,7 +90,5 @@ button {
 .view-post-button {
   margin-right: 5px;
 }
-
-
 
 /*END*/
