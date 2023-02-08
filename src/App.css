@@ -57,12 +57,12 @@ button {
 }
 
 .create-post {
-  height: auto;
+  min-height: 800px;
   padding-bottom: 30px;
 }
 
 .edit-post {
-  height: auto;
+  min-height: 800px;
   padding-bottom: 30px;
 }
 
