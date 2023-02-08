@@ -23,7 +23,7 @@ export default function App() {
           <Route exact path="/dashboard" element={<Dashboard />} />
           <Route exact path="/create-post" element={<CreatePost />} />
           <Route exact path="/edit-post/:id" element={<EditPost />} />
-          <Route exact path="/profile/:id" element={<Profile />} />
+          <Route exact path="/profile" element={<Profile />} />
         </Routes>
       </Router>
       <Footer />

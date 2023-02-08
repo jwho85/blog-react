@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import "./Dashboard.css";
 import { useAuthState } from "react-firebase-hooks/auth";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { auth, db, logout } from "./utils/firebase";
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
@@ -22,7 +22,7 @@ export default function Menu() {
                         <Nav.Link>Logged in as: {user?.email}</Nav.Link>
                         <Nav.Link as={Link} to={"/dashboard"}>Dashboard</Nav.Link>
                         <Nav.Link as={Link} to={"/create-post"}>Create Post</Nav.Link>
-                        <Nav.Link as={Link} to={"/profile/" + user?.uid}>Profile</Nav.Link>
+                        <Nav.Link as={Link} to={"/profile"}>Profile</Nav.Link>
                         <Nav.Link onClick={logout}>Logout</Nav.Link>
                     </Nav>
                 </Navbar.Collapse>

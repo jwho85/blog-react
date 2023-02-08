@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState } from "react";
 import "./Dashboard.css";
 import "./Draft.css";
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
