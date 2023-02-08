@@ -29,7 +29,7 @@ export default function Profile() {
         })
     }, [])
 
-    //function for setting user docID
+    //function for setting user variables
     useEffect(() => {
         setUserDocID(userInfo[0]?.id);
         setUserName(userInfo[0]?.data.name);
