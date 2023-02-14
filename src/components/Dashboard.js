@@ -217,9 +217,9 @@ export default function Dashboard() {
     }
 
     return (
-        <div className="dash-board">
+        <div>
             <Menu />
-            <div className="bottom-padding"
+            <div className="bottom-padding dash-board"
                 style={{
                     background: `${userBackgroundColor}`,
                     color: `${userFontColor}`,
