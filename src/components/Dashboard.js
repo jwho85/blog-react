@@ -217,7 +217,7 @@ export default function Dashboard() {
     }
 
     return (
-        <div>
+        <div className="dash-board">
             <Menu />
             <div className="bottom-padding"
                 style={{

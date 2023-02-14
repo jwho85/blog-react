@@ -123,9 +123,9 @@ export default function CreatePost() {
     //END
 
     return (
-        <div>
+        <div className="create-post">
             <Menu />
-            <Container className="container-top-padding create-post">
+            <Container className="container-top-padding">
                 <div>
                     <h1>Create Post</h1>
                 </div>

@@ -57,12 +57,16 @@ button {
 }
 
 .create-post {
-  min-height: 800px;
+  min-height: 100vh;
   padding-bottom: 30px;
 }
 
+.dash-board {
+  min-height: 100vh;
+}
+
 .edit-post {
-  min-height: 800px;
+  min-height: 100vh;
   padding-bottom: 30px;
 }
 
