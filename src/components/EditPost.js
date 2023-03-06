@@ -15,11 +15,12 @@ import { Editor } from 'react-draft-wysiwyg';
 import { convertToHTML, convertFromHTML } from 'draft-convert';
 import Menu from "./Menu";
 import { useParams } from "react-router-dom";
-import { htmlToText } from "html-to-text";
+import htmlToDraft from 'html-to-draftjs';
+import { useNavigate } from "react-router-dom";
+import Container from 'react-bootstrap/Container';
 
 export default function EditPost() {
 
-    const [user, loading, error] = useAuthState(auth);
     const [formData, setFormData] = useState({
         title: "",
         body: "",
@@ -29,9 +30,9 @@ export default function EditPost() {
     const [percent, setPercent] = useState(0);
     const [imageURL, setImageURL] = useState("");
     const [post, setPost] = useState([]);
-    const [text, setText] = useState("");
 
     const { id } = useParams();
+    const navigate = useNavigate();
 
     //Draft.js code
 
@@ -41,19 +42,26 @@ export default function EditPost() {
 
     const [convertedContent, setConvertedContent] = useState(null);
 
+    //function for converting the HTML back to text
+    const htmlToDraftBlocks = (html) => {
+        const blocksFromHtml = htmlToDraft(html);
+        const { contentBlocks, entityMap } = blocksFromHtml;
+        const contentState = ContentState.createFromBlockArray(contentBlocks, entityMap);
+        const editorState = EditorState.createWithContent(contentState);
+        return editorState;
+    }
+
     //function for converting post body to HTML
     useEffect(() => {
         let html = convertToHTML(editorState.getCurrentContent());
         setConvertedContent(html);
         setFormData({ ...formData, body: convertedContent });
-    }, [editorState, convertedContent, formData]);
+    },);
 
     //function for setting the image to the image URL
     useEffect(() => {
         setFormData({ ...formData, image: imageURL });
-    }, [formData, imageURL]);
-
-    // console.log(convertedContent);
+    }, [imageURL]);
 
     //END
 
@@ -61,7 +69,6 @@ export default function EditPost() {
 
     function handleImageChange(event) {
         setFile(event.target.files[0]);
-        // setFormData({ ...formData, image: event.target.files[0].name });
     }
 
     const handleUpload = () => {
@@ -103,18 +110,16 @@ export default function EditPost() {
 
     //Get post code
 
-    //function for getting the post
+    //function for getting the post and setting the editor state
     useEffect(() => {
         const getPost = async () => {
             const docRef = doc(db, 'posts', id);
             try {
                 const docSnap = await getDoc(docRef);
                 setPost(docSnap.data());
-                console.log(post);
-                const text = htmlToText(post.body, {
-                });
-                console.log(text);
-                setText(text);
+                setFormData({ ...formData, title: post.title });
+                setEditorState(htmlToDraftBlocks(post.body));
+                setImageURL(post.image);
             } catch (error) {
                 console.log(error)
             }
@@ -123,7 +128,7 @@ export default function EditPost() {
         return () => {
             // this now gets called when the component unmounts
         };
-    }, [id, post]);
+    }, [id, post.body]);
 
     //END
 
@@ -148,6 +153,7 @@ export default function EditPost() {
                 created: Timestamp.now(),
             })
             alert("Post updated successfully!")
+            navigate("/dashboard");
         } catch (err) {
             alert(err)
         }
@@ -158,9 +164,9 @@ export default function EditPost() {
     return (
         <div>
             <Menu />
-            <div>
+            <Container className="container-top-padding edit-post">
                 <div>
-                    <h1>Blog App</h1>
+                    <h1>Edit Post</h1>
                 </div>
                 <form onSubmit={handleSubmit}>
 
@@ -168,21 +174,14 @@ export default function EditPost() {
                         name="title"
                         type="text"
                         placeholder="Title"
-                        value={post.title}
+                        defaultValue={post.title}
                         onChange={(e) => setFormData({ ...formData, title: e.target.value })}
                     />
                     <br></br>
                     <br></br>
 
-                    {/* <textarea
-                        name="body"
-                        placeholder="Enter text here"
-                        value={formData.body}
-                        onChange={(e) => setFormData({ ...formData, body: e.target.value })}
-                    ></textarea> */}
-
                     <Editor
-                        editorState={EditorState.createWithContent(ContentState.createFromText(text))}
+                        editorState={editorState}
                         onEditorStateChange={setEditorState}
                         wrapperClassName="wrapper-class"
                         editorClassName="editor-class"
@@ -190,9 +189,16 @@ export default function EditPost() {
                     />
 
                     <br></br>
+                    Featured image:
+                    <br></br>
+                    <br></br>
+                    <img
+                        className="post-image"
+                        src={`${imageURL}`}
+                    />
+                    <br></br>
                     <br></br>
                     <input
-                        value=""
                         name="image"
                         type="file"
                         accept="image/*"
@@ -211,7 +217,7 @@ export default function EditPost() {
                     >Submit</button>
 
                 </form>
-            </div>
+            </Container>
         </div >
     );
 };

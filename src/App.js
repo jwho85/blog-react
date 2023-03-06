@@ -5,11 +5,13 @@ import Login from "./components/Login";
 import Register from "./components/Register";
 import Reset from "./components/Reset";
 import Dashboard from "./components/Dashboard";
-import ViewPosts from './components/ViewPosts';
 import CreatePost from "./components/CreatePost";
 import EditPost from "./components/EditPost";
+import Profile from './components/Profile';
+import Menu from "./components/Menu";
+import Footer from "./components/Footer";
 
-function App() {
+export default function App() {
 
   return (
     <div className="app">
@@ -19,13 +21,12 @@ function App() {
           <Route exact path="/register" element={<Register />} />
           <Route exact path="/reset" element={<Reset />} />
           <Route exact path="/dashboard" element={<Dashboard />} />
-          <Route exact path="/view-posts" element={<ViewPosts />} />
           <Route exact path="/create-post" element={<CreatePost />} />
           <Route exact path="/edit-post/:id" element={<EditPost />} />
+          <Route exact path="/profile" element={<Profile />} />
         </Routes>
       </Router>
+      <Footer />
     </div>
   );
 }
-
-export default App;

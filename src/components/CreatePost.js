@@ -14,6 +14,8 @@ import { EditorState } from 'draft-js';
 import { Editor } from 'react-draft-wysiwyg';
 import { convertToHTML } from 'draft-convert';
 import Menu from "./Menu";
+import { useNavigate } from "react-router-dom";
+import Container from 'react-bootstrap/Container';
 
 export default function CreatePost() {
 
@@ -26,6 +28,7 @@ export default function CreatePost() {
     const [file, setFile] = useState("");
     const [percent, setPercent] = useState(0);
     const [imageURL, setImageURL] = useState("");
+    const navigate = useNavigate();
 
     //Draft.js code
 
@@ -40,14 +43,12 @@ export default function CreatePost() {
         let html = convertToHTML(editorState.getCurrentContent());
         setConvertedContent(html);
         setFormData({ ...formData, body: convertedContent });
-    }, [editorState, convertedContent, formData]);
+    },);
 
     //function for setting the image to the image URL
     useEffect(() => {
         setFormData({ ...formData, image: imageURL });
-    }, [formData, imageURL]);
-
-    // console.log(convertedContent);
+    }, [imageURL]);
 
     //END
 
@@ -55,7 +56,6 @@ export default function CreatePost() {
 
     function handleImageChange(event) {
         setFile(event.target.files[0]);
-        // setFormData({ ...formData, image: event.target.files[0].name });
     }
 
     const handleUpload = () => {
@@ -83,11 +83,9 @@ export default function CreatePost() {
             () => {
                 // download url
                 getDownloadURL(uploadTask.snapshot.ref).then((url) => {
-                    console.log(url);
                     const urlToString = url.toString();
-                    console.log(urlToString);
                     setImageURL(urlToString);
-                    console.log(imageURL);
+
                 });
             }
         );
@@ -116,6 +114,7 @@ export default function CreatePost() {
                 uid: user?.uid,
             })
             alert("Post created successfully!")
+            navigate("/dashboard");
         } catch (err) {
             alert(err)
         }
@@ -126,9 +125,9 @@ export default function CreatePost() {
     return (
         <div>
             <Menu />
-            <div>
+            <Container className="container-top-padding create-post">
                 <div>
-                    <h1>Blog App</h1>
+                    <h1>Create Post</h1>
                 </div>
                 <form onSubmit={handleSubmit}>
 
@@ -142,21 +141,23 @@ export default function CreatePost() {
                     <br></br>
                     <br></br>
 
-                    {/* <textarea
-                        name="body"
-                        placeholder="Enter text here"
-                        value={formData.body}
-                        onChange={(e) => setFormData({ ...formData, body: e.target.value })}
-                    ></textarea> */}
-
                     <Editor
                         editorState={editorState}
                         onEditorStateChange={setEditorState}
                         wrapperClassName="wrapper-class"
                         editorClassName="editor-class"
                         toolbarClassName="toolbar-class"
+                        placeholder="Content"
                     />
 
+                    <br></br>
+                    Featured image:
+                    <br></br>
+                    <br></br>
+                    <img
+                        className="post-image"
+                        src={`${imageURL}`}
+                    />
                     <br></br>
                     <br></br>
                     <input
@@ -178,7 +179,7 @@ export default function CreatePost() {
                     >Submit</button>
 
                 </form>
-            </div>
+            </Container>
         </div >
     );
 };

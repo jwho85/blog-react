@@ -40,29 +40,45 @@
 
 /*JH*/
 
-.add-button {
-  margin-left: 5px;
-  background: lightgreen;
-}
-
-body {
-  padding: 20px;
-  margin: 0px;
+.bottom-padding {
+  padding-bottom: 30px;
 }
 
 button {
-  padding: 1px 5px;
   cursor: pointer;
 }
 
-.delete-button {
-  background: lightcoral;
+.change-background {
+  margin-right: 5px;
 }
 
-.edit-button {
-  margin-left: 5px;
-  margin-right: 5px;
-  background: lightyellow;
+.container-top-padding {
+  padding-top: 30px;
+}
+
+.create-post {
+  min-height: 100vh;
+  padding-bottom: 30px;
+}
+
+.dash-board {
+  min-height: 100vh;
+}
+
+.edit-post {
+  min-height: 100vh;
+  padding-bottom: 30px;
+}
+
+.footer {
+  background: black;
+  text-align: center;
+  color: white;
+  padding: 5%;
+}
+
+.navbar {
+  background: #efefef;
 }
 
 .post-image {
@@ -70,9 +86,13 @@ button {
 }
 
 .single-post {
-  margin: 50px 0px;
+  margin: 30px 0px;
   background: #efefef;
   padding: 20px;
+}
+
+.view-post-button {
+  margin-right: 5px;
 }
 
 /*END*/
